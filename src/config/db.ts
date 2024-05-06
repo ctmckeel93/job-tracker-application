@@ -1,21 +1,12 @@
-import mysql from 'mysql';
+import mysql from 'mysql2';
 
-const database = "job-tracker";
+const database = "bible_verses";
 
-const db = mysql.createConnection({
+const pool = mysql.createPool({
     host: "localhost",
     user: "root",
     password: "root",
-    database: database
+    database
+}).promise();
 
-});
-
-db.connect(err => {
-    if (err) {
-        console.error("Something went wrong connecting to mysql");
-    } else {
-        console.log(`Connected to mysql database: ${database}`);
-    }
-})
-
-export default db;
+export default pool;
