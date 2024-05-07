@@ -11,9 +11,7 @@ type user = {
 
 
 export async function GET() {
-    const results = await db.query("SELECT * FROM users;");
-    console.log(results)
-    return Response.json(results[0]);
 
-        
+    // const results = await db.query("Select * From users;")
+    return Response.json("Connected to Job Tracker db");
 }

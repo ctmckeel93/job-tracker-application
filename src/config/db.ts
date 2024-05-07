@@ -1,6 +1,6 @@
 import mysql from 'mysql2';
 
-const database = "bible_verses";
+const database = "job_tracker";
 
 const pool = mysql.createPool({
     host: "localhost",
