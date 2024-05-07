@@ -13,7 +13,6 @@ export async function POST(request: NextRequest) {
 
     console.log(body)
     console.log(body.email)
-    const salt = bcrypt.genSalt(10);
     const newPassword =  await bcrypt.hash(body.password, 10);
     console.log(newPassword)
 

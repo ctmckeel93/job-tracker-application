@@ -1,12 +1,7 @@
 import { NextResponse } from "next/server";
 import db from "../../config/db";
 
-type user = {
-    id: number,
-    first_name: string,
-    last_name: string,
-    role: string
-}
+
 
 
 
