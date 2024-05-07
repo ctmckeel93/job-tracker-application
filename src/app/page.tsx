@@ -44,6 +44,7 @@ export default function Home() {
       .then(response => {
         console.log(response)
         cookies.set("userId", response.data.data.id);
+        cookies.set("userName", response.data.data.name);
         setUserId(response.data.data.id);
         router.push("dashboard")
       })

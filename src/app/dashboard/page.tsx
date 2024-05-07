@@ -1,8 +1,11 @@
+'use client'
+import cookies from 'js-cookie';
 export default function DashboardPage() {
 
     return (
         <>
-            <h1>Hello Dashboard</h1>
+            <h1>Hello {cookies.get("userName")}</h1>
+
         </>
     )
 }
