@@ -3,9 +3,14 @@ import {useState, useEffect} from 'react';
 import Image from "next/image";
 import axios from 'axios';
 import {API_URL} from '../constants';
+import { useRouter } from 'next/navigation';
+import cookies from 'js-cookie';
+// import {cookies} from 'next/headers';
 
 export default function Home() {
 
+  const router = useRouter();
+  const [userId, setUserId] = useState(0);
 
   const initialUser = {
     first_name: "",
@@ -25,20 +30,32 @@ export default function Home() {
   const handleRegistration = (e) => {
     e.preventDefault();
     axios.post(API_URL + "users", user)
-      .then(response => console.log("User successfully created:", user))
+      .then(response => {
+        console.log("User successfully created:", user)
+        router.push("dashboard")
+        
+      })
       .catch(err => console.log("Something went wrong adding user to database:", err))
   }
 
   const handleLogin = (e) => {
     e.preventDefault();
     axios.post(API_URL + "users/login", login)
-      .then(response => console.log(response))
+      .then(response => {
+        console.log(response)
+        cookies.set("userId", response.data.data.id);
+        setUserId(response.data.data.id);
+        router.push("dashboard")
+      })
       .catch(err => console.log(err))
   }
 
   return (
     <>
-      
+
+    <div className="container flex flex-col items-center w-full justify-space-around h-screen">
+
+
       <form onSubmit={handleRegistration} className="flex flex-col gap-3 m-2 bg-slate-600 w-[50%] p-4 text-black">
 
           <div className="form-group flex justify-content-between">
@@ -76,6 +93,8 @@ export default function Home() {
             <button className="bg-green-400 p-2 text-blue-900">Login</button>
           </div>
       </form>
+    </div>
+      
     </>
   );
 }

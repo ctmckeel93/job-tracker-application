@@ -21,8 +21,11 @@ export async function POST(request: NextRequest) {
     }
 
 
-
-    return NextResponse.json({message: "Successful login attempt recorded"}, {status: 200});
+    // request.cookies.set("userId", rowArray[0].id);
+    return NextResponse.json({message: "Successful login attempt recorded", data:{
+        id: rowArray[0].id,
+        name: `${rowArray[0].first_name} ${rowArray[0].last_name}`
+    }}, {status: 200});
 }
 
 
