@@ -1,10 +1,11 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "..";
+import { QueryResult } from "mysql2";
 
 export async function GET() {
 
-    const [rows, fields] = await db.query("SELECT jobs.*, users.id AS users_id, first_name, last_name, email FROM jobs LEFT JOIN users ON users.id = jobs.user_id;")
+    const [rows, fields]: [any[],any[]] = await db.query("SELECT jobs.*, users.id AS users_id, first_name, last_name, email FROM jobs LEFT JOIN users ON users.id = jobs.user_id;")
     const results = [];
     for (const row of rows) {
         const userData = {

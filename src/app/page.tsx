@@ -1,5 +1,5 @@
 "use client"
-import {useState, useEffect} from 'react';
+import {useState, useEffect, FormEvent} from 'react';
 import Image from "next/image";
 import axios from 'axios';
 import {API_URL} from '../constants';
@@ -27,7 +27,7 @@ export default function Home() {
   const [user, setUser] = useState(initialUser);
   const [login, setLogin] = useState(initialLogin);
 
-  const handleRegistration = (e) => {
+  const handleRegistration = (e: FormEvent) => {
     e.preventDefault();
     axios.post(API_URL + "users", user)
       .then(response => {
@@ -38,7 +38,7 @@ export default function Home() {
       .catch(err => console.log("Something went wrong adding user to database:", err))
   }
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: FormEvent) => {
     e.preventDefault();
     axios.post(API_URL + "users/login", login)
       .then(response => {

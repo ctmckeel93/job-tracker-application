@@ -11,7 +11,7 @@ export default function JobDetailsPage({params}: {params: {id:string}}) {
         axios.get(`http://localhost:3000/api/jobs/${params.id}`)
             .then(response => setJob(response.data.job))
             .catch(err => console.log(err))
-    },[])
+    },[params.id])
 
     if (!job) {
         return <p>...Loading</p>

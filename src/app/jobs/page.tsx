@@ -2,7 +2,7 @@
 import { API_URL } from "@/constants";
 import axios from "axios";
 import cookies from "js-cookie";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 export default function CreateJobTrackerPage() {
     const initialJobTracker = {
         company: "",
@@ -12,7 +12,7 @@ export default function CreateJobTrackerPage() {
 
     const [jobTracker, setJobTracker] = useState(initialJobTracker);
 
-    const submitHandler = (e) => {
+    const submitHandler = (e: FormEvent) => {
         e.preventDefault();
         axios.post(API_URL + "jobs", jobTracker)
             .then(response => {
