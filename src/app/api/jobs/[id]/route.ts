@@ -7,35 +7,51 @@ export async function GET(request: NextRequest, {params}: {
 }) {
     // console.log(params.id);
 
-    const [rows, fields] = await db.query("SELECT jobs.*, users.id AS users_id, first_name, last_name, email FROM jobs LEFT JOIN users ON users.id = jobs.user_id WHERE jobs.id = ?",[params.id])
+    const [rows, fields] = await db.query("SELECT jobs.*, users.id AS users_id, first_name, last_name, email, notes_id, context, category, notes.created_at FROM jobs LEFT JOIN users ON users.id = jobs.user_id LEFT JOIN notes ON jobs_id = jobs.id WHERE jobs.id = ?",[params.id])
 
-    const results = [];
+    const rowArray = arrayFromRows(rows);
 
-    for (const row of arrayFromRows(rows)) {
+    const job = rowArray[0];
 
-        console.log(row);
+    const jobData = {
+        id: job.id,
+        company: job.company,
+        position: job.position,
+        user: {},
+        notes: [] as any[]
+    } 
+    const userData = {
+        id: job.user_id,
+        first_name: job.first_name, 
+        last_name: job.last_name,
+        email: job.email
+    }
 
-        const jobData = {
-            id: row.id,
-            company: row.company,
-            position: row.position,
-            user: {}
+    jobData.user = userData;
+
+    
+    for (const row of rowArray) {
+
+
+
+        const noteData = {
+            id: row.notes_id,
+            context: row.context,
+            category: row.category,
+            created_at: new Date(row.created_at).toDateString()
         }
 
-        const userData = {
-            id: row.user_id,
-            first_name: row.first_name, 
-            last_name: row.last_name,
-            email: row.email
-        }
-
-        jobData.user = userData;
-        results.push(jobData);
+        
+        
+        jobData.notes.push(noteData);
     }
 
 
 
-    return NextResponse.json({message: "Retrieved job with user data", job: results[0]}, {
+
+
+
+    return NextResponse.json({message: "Retrieved job with user data", job: jobData}, {
         status: 200
     });
 }

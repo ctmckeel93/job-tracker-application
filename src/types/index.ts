@@ -9,6 +9,7 @@ export type JobData = {
     id: number,
     company: string,
     position: string,
-    user: UserData
+    user: UserData,
+    notes: any[]
 }
 
