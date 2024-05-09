@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "../..";
+import { arrayFromRows } from "@/app/helpers";
 
 export async function GET(request: NextRequest, {params}: {
     params: {id: number}
@@ -10,7 +11,7 @@ export async function GET(request: NextRequest, {params}: {
 
     const results = [];
 
-    for (const row of rows) {
+    for (const row of arrayFromRows(rows)) {
 
         console.log(row);
 
@@ -38,3 +39,21 @@ export async function GET(request: NextRequest, {params}: {
         status: 200
     });
 }
+
+export async function PUT(request: NextRequest, {params}: {
+    params: {id:number}
+}) {
+    const body = await request.json();
+
+    db.query("Update jobs SET company=?, position=? WHERE id=?", [body.company, body.position, params.id])
+    return NextResponse.json({message: "Job successfully updated", body: body });
+}
+
+export async function DELETE(request: NextRequest,{params}: {
+    params: {id:number}
+}) {
+
+    db.query("DELETE FROM jobs WHERE id=?", [params.id]);
+    return NextResponse.json({message: "Job successfully deleted"})
+}
+

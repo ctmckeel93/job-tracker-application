@@ -36,7 +36,6 @@ export default function DashboardPage() {
             <table className="table table-dark table-hover table-striped text-center">
                 <thead>
                     <tr>
-                        <th>#</th>
                         <th>Company</th>
                         <th>Position</th>
                         <th>Actions</th>
@@ -46,8 +45,10 @@ export default function DashboardPage() {
                     {jobs.length > 0 &&
                         jobs.map((job: JobData, index) => (
                             <>
-                                <tr>
-                                    <td>{job.id}</td>
+                            {
+                                job.user.id == Number(cookies.get("userId")) &&
+
+                                <tr className="align-middle">
                                     <td>{job.company}</td>
                                     <td>{job.position}</td>
                                     <td>
@@ -58,6 +59,7 @@ export default function DashboardPage() {
                                         </Link>
                                     </td>
                                 </tr>
+                            }
                             </>
                         ))}
                 </tbody>
