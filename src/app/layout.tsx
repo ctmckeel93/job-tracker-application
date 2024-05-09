@@ -27,11 +27,11 @@ export default function RootLayout({
                 integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
                 crossOrigin="anonymous"
             ></link>
-            <body className={inter.className}>
+            <body className={`bg-secondary`}>
                 <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                     <div className="container-fluid">
                         <a className="navbar-brand" href="#">
-                            Navbar
+                            Job Tracker App
                         </a>
                         <button
                             className="navbar-toggler"
