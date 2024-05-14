@@ -7,7 +7,7 @@ import Link from "next/link";
 import { API_URL } from "@/constants";
 
 export default function JobDetailsPage({ params }: { params: { id: string } }) {
-    const [job, setJob] = useState<JobData | null>(null);
+    const [job, setJob] = useState<JobData | null>();
     const [addingNote, setAddingNote] = useState(false);
 
     useEffect(() => {
@@ -41,7 +41,10 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
             jobId: Number(params.id),
         }
         axios.post(API_URL + `notes`, note)
-        .then(() => setAddingNote(false))
+        .then(() => {
+            setAddingNote(false)
+            setJob(job != null ? {...job, notes: [...job.notes, note]}: null)
+        })
         .catch(error => console.log(error))
     }
 
@@ -71,20 +74,16 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
                         </label>
                     <div className="w-100">
                         <input
-                            onChange={(e) =>
-                                setNote({ ...note, category: e.target.value })
-                            }
                             className="w-100 m-2"
                             type="text"
+                            name="category"
                         />
                     </div>
                     <div className="w-100">
                         <label htmlFor="note" className="mx-2">Note:</label>
                         <textarea
                             className="w-100 m-2"
-                            onChange={(e) =>
-                                setNote({ ...note, context: e.target.value })
-                            }
+                            name="context"
                         ></textarea>
                     </div>
                     <button className="btn btn-success align-self-end">Add</button>
