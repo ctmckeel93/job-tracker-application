@@ -1,14 +1,22 @@
 'use client'
+import { JobData } from "@/types";
 import axios from "axios";
 import cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function UpdateJobPage({params}: {
     params: {id:number}
 }) {
 
+    const initialJobTracker = {
+        company: "",
+        position: "",
+        userId: cookies.get("userId"),
+    };
+
     const router = useRouter();
+    const [jobTracker, setJobTracker] = useState(initialJobTracker);
 
     useEffect(() => {
         axios.get("http://localhost:3000/api/jobs/" + params.id)
@@ -16,23 +24,26 @@ export default function UpdateJobPage({params}: {
             .catch(error => console.log(error))
     },[])
 
-    const initialJobTracker = {
-        id: params.id,
-        company: "",
-        position: "",
-        user_id: cookies.get("userId"),
-    };
 
-    const submitHandler = (e) => {
+    const submitHandler = (event: FormEvent<HTMLFormElement>) => {
 
-        e.preventDefault();
-        axios.put(`http://localhost:3000/api/jobs/${params.id}`, jobTracker)
+        event.preventDefault();
+
+        // const jobTracker = {
+        //     id: params.id,
+            
+        // }
+
+        const updatedJob = {
+            company: jobTracker?.company,
+            position: jobTracker?.position,
+            userId: Number(cookies.get("userId"))
+
+        }
+        axios.put(`http://localhost:3000/api/jobs/${params.id}`, updatedJob)
             .then(() => router.push("/dashboard"))
             .catch(error => console.log(error))
     }
-
-
-    const [jobTracker, setJobTracker] = useState(initialJobTracker);
 
     return (
         <>
@@ -44,7 +55,7 @@ export default function UpdateJobPage({params}: {
                         id="company"
                         name="company"
                         className="text-black"
-                        value={jobTracker.company}
+                        value={jobTracker?.company}
                         onChange={(e) =>
                             setJobTracker({
                                 ...jobTracker,
