@@ -33,7 +33,7 @@ model Job {
   position String 
   user User? @relation(fields: [userId], references: [id])
   userId Int 
-  notes Note[]
+  notes Note[] 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   @@map("jobs")
@@ -43,7 +43,7 @@ model Note {
   id Int @id @default(autoincrement())
   context String 
   category String
-  job Job? @relation(fields: [jobId], references: [id])
+  job Job? @relation(fields: [jobId], references: [id], onDelete: Cascade)
   jobId Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

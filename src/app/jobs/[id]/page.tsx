@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { type JobData } from "../../../types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -9,6 +9,12 @@ import { API_URL } from "@/constants";
 export default function JobDetailsPage({ params }: { params: { id: string } }) {
     const [job, setJob] = useState<JobData | null>(null);
     const [addingNote, setAddingNote] = useState(false);
+
+    useEffect(() => {
+        axios.get(`${API_URL}/jobs/${params.id}`)
+            .then(response => setJob(response.data.job))
+            .catch(err => console.log(err))
+    },[])
     const [note, setNote] = useState({
         context: "",
         category: "",
@@ -16,12 +22,6 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
     });
     const router = useRouter();
 
-    useEffect(() => {
-        axios
-            .get(`http://localhost:3000/api/jobs/${params.id}`)
-            .then((response) => setJob(response.data.job))
-            .catch((err) => console.log(err));
-    }, [params.id]);
 
     const removeJob = () => {
         axios
@@ -30,8 +30,16 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
             .catch((error) => console.log(error));
     };
 
-    const handleAddNote = (e) => {
-        e.preventDefault();
+    const handleAddNote = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.currentTarget)
+
+        const note = {
+            context: formData.get("context"),
+            category: formData.get("category"),
+            jobId: Number(params.id),
+        }
         axios.post(API_URL + `notes`, note)
         .then(() => setAddingNote(false))
         .catch(error => console.log(error))
