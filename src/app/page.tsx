@@ -10,114 +10,22 @@ import cookies from "js-cookie";
 export default function Home() {
     const router = useRouter();
     const [userId, setUserId] = useState(0);
-    const [loginError, setLoginError] = useState("");
-    const [registrationErrors, setRegistrationErrors] = useState({
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
-        confirm_password: "",
-    });
 
-    const initialUser = {
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
-        confirm_password: "",
-    };
+    const handleRegistration = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget)
+        const userData = {
+            first_name: formData.get("first_name"),
+            last_name: formData.get("last_name"),
+            email: formData.get("email"),
+            password: formData.get("password")
 
-    const initialLogin = {
-        email: "",
-        password: "",
-    };
-
-    const [user, setUser] = useState(initialUser);
-    const [login, setLogin] = useState(initialLogin);
-
-    const handleRegistration = (e: FormEvent) => {
-        e.preventDefault();
-        axios
-            .post(API_URL + "users", user)
-            .then((response) => {
-                console.log("User successfully created:", user);
-                router.push("dashboard");
-            })
-            .catch((err) =>
-                console.log(
-                    "Something went wrong adding user to database:",
-                    err
-                )
-            );
-    };
-
-    const handleRegistrationInput = (e: SyntheticEvent) => {
-        const inputName: string = (e.target as HTMLInputElement).name;
-        const inputValue: string = (e.target as HTMLInputElement).value;
-
-        handleFrontendValidations(inputName, inputValue);
-
-      // if (inputName === "last_name" && inputValue.length < 3 && inputValue.length !== 0) {
-      //   setRegistrationErrors({
-      //     ...registrationErrors,
-      //     last_name: "Last name must have at least 3 characters"
-      //   })
-      // } else {
-      //   setRegistrationErrors({
-      //     ...registrationErrors,
-      //     last_name: ""
-      //   })
-      // }
-
-        setUser({ ...user, [inputName]: inputValue });
-        
-
-    };
-
-    const handleFrontendValidations = (inputName:string, inputValue:any) => {
-      if (inputName === "first_name") {
-        if (inputValue.length < 3 && inputValue.length !== 0) {
-          console.log("Typing in first name input")
-          setRegistrationErrors({
-              ...registrationErrors,
-              first_name: "First name must have at least 3 characters"
-          });
-        } else {
-          setRegistrationErrors({ ...registrationErrors, first_name: "" });
         }
-      } 
 
-      if (inputName === "last_name") {
-        if (inputValue.length < 3 && inputValue.length !== 0) {
-          setRegistrationErrors({
-              ...registrationErrors,
-              last_name: "Last name must have at least 3 characters"
-          });
-        } else {
-          setRegistrationErrors({ ...registrationErrors, last_name: "" });
-          }
-      } 
+        axios.post(`${API_URL}/users`, userData)
+            .then(response => console.log(response))
+    }
 
-
-    } 
-
-
-    const handleLogin = (e: SyntheticEvent) => {
-        e.preventDefault();
-        axios
-            .post(API_URL + "users/login", login)
-            .then((response) => {
-                console.log(response);
-                cookies.set("userId", response.data.data.id);
-                cookies.set("userName", response.data.data.name);
-                setUserId(response.data.data.id);
-                router.push("dashboard");
-            })
-            .catch((err) => {
-                console.log(err);
-                setLoginError(err.response.data.message);
-            });
-    };
 
     return (
         <>
@@ -136,10 +44,8 @@ export default function Home() {
                             type="text"
                             id="first_name"
                             name="first_name"
-                            onChange={handleRegistrationInput}
                         />
                         <p className="text-danger">
-                            {registrationErrors.first_name}
                         </p>
                     </div>
                     <div className="mb-3">
@@ -151,9 +57,7 @@ export default function Home() {
                             type="text"
                             id="last_name"
                             name="last_name"
-                            onChange={handleRegistrationInput}
                         />
-                        <p className="text-danger">{registrationErrors.last_name}</p>
                     </div>
                     <div className="mb-3">
                         <label className="form-label" htmlFor="email">
@@ -164,7 +68,6 @@ export default function Home() {
                             id="email"
                             name="email"
                             type="text"
-                            onChange={handleRegistrationInput}
                         />
                     </div>
                     <div className="mb-3">
@@ -176,7 +79,6 @@ export default function Home() {
                             type="password"
                             id="password"
                             name="password"
-                            onChange={handleRegistrationInput}
                         />
                     </div>
                     <div className="mb-3">
@@ -184,14 +86,13 @@ export default function Home() {
                             className="form-label"
                             htmlFor="confirm-password"
                         >
-                            Password
+                            Confirm Password
                         </label>
                         <input
                             className="form-control"
                             type="password"
                             id="confirm-password"
                             name="confirm-password"
-                            onChange={handleRegistrationInput}
                         />
                     </div>
                     <div className="form-group d-flex justify-content-end">
@@ -202,11 +103,9 @@ export default function Home() {
                 </form>
 
                 <form
-                    onSubmit={handleLogin}
                     className="d-flex flex-column bg-dark w-50 p-3 text-light rounded"
                 >
                     <h2>Login</h2>
-                    <p className="text-danger">{loginError}</p>
                     <div className="form-group flex gap-2 mb-3">
                         <label className="form-label" htmlFor="login-email">
                             Email
@@ -216,9 +115,6 @@ export default function Home() {
                             id="login-email"
                             name="login-email"
                             type="text"
-                            onChange={(e) =>
-                                setLogin({ ...login, email: e.target.value })
-                            }
                         />
                     </div>
                     <div className="form-group flex gap-2 mb-3">
@@ -228,9 +124,6 @@ export default function Home() {
                             type="password"
                             id="login-password"
                             name="login-password"
-                            onChange={(e) =>
-                                setLogin({ ...login, password: e.target.value })
-                            }
                         />
                     </div>
                     <div className="form-group d-flex justify-content-end">
