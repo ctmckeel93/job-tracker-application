@@ -4,7 +4,9 @@ import { PrismaClient} from "@prisma/client";
 const prisma = new PrismaClient();
 export async function GET() {
 
-    const results = await prisma.job.findMany()
+    const results = await prisma.job.findMany({
+        include: {user:true}
+    })
 
     return NextResponse.json({
         message: "Successfully retrieved jobs with user data",
