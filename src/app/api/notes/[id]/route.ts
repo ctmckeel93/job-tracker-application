@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "../..";
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 export async function DELETE(request: NextRequest, {params}: {
     params: {id:number}
 }) {
 
-    db.query("DELETE FROM notes WHERE notes_id=?", [params.id]);
+    await prisma.note.delete({
+        where: {id: Number(params.id)}
+    })
     return NextResponse.json({message: "Note successfully deleted"})
 
 }
