@@ -12,7 +12,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
     const [note, setNote] = useState({
         context: "",
         category: "",
-        jobs_id: params.id,
+        jobId: Number(params.id),
     });
     const router = useRouter();
 
@@ -85,7 +85,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
                 <button onClick={() => setAddingNote(true)}>Add Note</button>
             )}
             <div>
-                {job && job.notes.map((note) => (
+                {job && job.notes?.map((note) => (
                     <>
                         <div>
                             <i>{note.created_at}</i>

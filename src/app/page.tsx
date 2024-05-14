@@ -9,7 +9,10 @@ import cookies from "js-cookie";
 
 export default function Home() {
     const router = useRouter();
-    const [userId, setUserId] = useState(0);
+    const user = {
+        id: Number(cookies.get("userId")),
+        name: cookies.get("userName")
+    }
 
     const handleRegistration = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -36,8 +39,14 @@ export default function Home() {
             password: formData.get("login-password")
         }
 
+        const jsonData = JSON.stringify(loginData)
+        console.log(jsonData)
+
         axios.post(`${API_URL}/users/login`, loginData)
-            .then(response => console.log(response))
+            .then(response => {
+                console.log(response)
+                router.push("/dashboard")
+            }).catch(err => console.log(err))
     }
 
 

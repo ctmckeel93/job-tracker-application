@@ -2,18 +2,19 @@
 import { API_URL } from "@/constants";
 import axios from "axios";
 import cookies from "js-cookie";
-import { FormEvent, useState } from "react";
+import { FormEvent} from "react";
 export default function CreateJobTrackerPage() {
-    const initialJobTracker = {
-        company: "",
-        position: "",
-        user_id: cookies.get("userId"),
-    };
 
-    const [jobTracker, setJobTracker] = useState(initialJobTracker);
+    const submitHandler = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
 
-    const submitHandler = (e: FormEvent) => {
-        e.preventDefault();
+        const formData = new FormData(event.currentTarget)
+
+        const jobTracker = {
+            company: formData.get("company"),
+            position: formData.get("position"),
+            userId: cookies.get("userId"),
+        };
         axios.post(API_URL + "jobs", jobTracker)
             .then(response => {
                 console.log(response);
@@ -29,12 +30,6 @@ export default function CreateJobTrackerPage() {
                         id="company"
                         name="company"
                         className="text-black"
-                        onChange={(e) =>
-                            setJobTracker({
-                                ...jobTracker,
-                                company: e.target.value,
-                            })
-                        }
                     />
                 </div>
                 <div className="form-group mb-2">
@@ -44,12 +39,6 @@ export default function CreateJobTrackerPage() {
                         id="position"
                         name="position"
                         className="text-black"
-                        onChange={(e) =>
-                            setJobTracker({
-                                ...jobTracker,
-                                position: e.target.value,
-                            })
-                        }
                     />
                 </div>
                 <button className="border border-red-600 rounded p-2">Add</button>

@@ -7,7 +7,7 @@ export async function GET(request: NextRequest, {params}: {
     const id = Number(params.id)
     const job = await prisma.job.findUnique({
         where: {id: id},
-        include: {user:true}
+        include: {user:true, notes:true}
     })
 
     return NextResponse.json({

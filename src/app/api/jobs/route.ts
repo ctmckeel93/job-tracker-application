@@ -16,7 +16,8 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
     const body = await request.json();
-
+    console.log(body)
+    body.userId = Number(body.userId);
     const newJob = await prisma.job.create({
         data: body
     })
