@@ -26,6 +26,20 @@ export default function Home() {
             .then(response => console.log(response))
     }
 
+    const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.currentTarget)
+
+        const loginData = {
+            email: formData.get("login-email"),
+            password: formData.get("login-password")
+        }
+
+        axios.post(`${API_URL}/users/login`, loginData)
+            .then(response => console.log(response))
+    }
+
 
     return (
         <>
@@ -103,6 +117,7 @@ export default function Home() {
                 </form>
 
                 <form
+                    onSubmit={handleLogin}
                     className="d-flex flex-column bg-dark w-50 p-3 text-light rounded"
                 >
                     <h2>Login</h2>
