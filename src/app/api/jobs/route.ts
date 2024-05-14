@@ -11,3 +11,18 @@ export async function GET() {
         jobs: results
     }, {status: 200}) 
 }
+
+export async function POST(request: NextRequest) {
+    const body = await request.json();
+
+    const newJob = await prisma.job.create({
+        data: body
+    })
+
+    return NextResponse.json({
+        message: "Successfully created new job",
+        job: newJob,
+        status: 201
+    })
+
+}
