@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.13.0",
+    "@workos-inc/authkit-nextjs": "^0.5.3",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "mysql2": "^3.9.7",
@@ -23,8 +24,8 @@
     "@types/bcrypt": "^5.0.2",
     "@types/js-cookie": "^3.0.6",
     "@types/mysql": "^2.15.26",
-    "@types/node": "^20",
-    "@types/react": "^18",
+    "@types/node": "20.12.12",
+    "@types/react": "18.3.2",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
@@ -32,6 +33,6 @@
     "next-cookies": "^2.0.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "5.4.5"
   }
 }
