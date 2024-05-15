@@ -58,7 +58,6 @@ export default function CreateJobTrackerPage() {
             />
           </div>
           <div className="form-group">
-            {" "}
             <button
               style={{
                 backgroundColor: "#AD974F",
@@ -69,7 +68,7 @@ export default function CreateJobTrackerPage() {
             >
               Add
             </button>
-          </div>{" "}
+          </div>
         </form>
       </div>
     </>
