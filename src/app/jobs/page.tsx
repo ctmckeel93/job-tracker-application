@@ -23,7 +23,7 @@ export default function CreateJobTrackerPage() {
   };
   return (
     <>
-      <div className="container d-flex flex-column align-items-center gap-3 p-4">
+      <div className="flex flex-col">
         <style jsx>{`
           .responsive-form {
             width: 100%;
@@ -37,7 +37,7 @@ export default function CreateJobTrackerPage() {
         `}</style>
         <form
           onSubmit={submitHandler}
-          className={`responsive-form flex flex-column p-3 rounded lg:w-75 md:w-50 sm:w-100 bg-dark text-light m-4`}
+          className={`responsive-form flex flex-col rounded shadow shadow-yellow-400 border border-yellow-500`}
         >
           <div className="form-group mb-2">
             <label htmlFor="company">Company</label>
