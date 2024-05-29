@@ -5,7 +5,6 @@ import axios from "axios";
 import { API_URL } from "../constants";
 import { useRouter } from "next/navigation";
 import cookies from "js-cookie";
-// import {cookies} from 'next/headers';
 
 export default function Home() {
   const router = useRouter();
