@@ -5,13 +5,11 @@ import axios from "axios";
 import { API_URL } from "../constants";
 import { useRouter } from "next/navigation";
 import cookies from "js-cookie";
+import Link from "next/link";
+import Router from "next/router";
 
 export default function Home() {
-  const router = useRouter();
-  const user = {
-    id: Number(cookies.get("userId")),
-    name: cookies.get("userName"),
-  };
+  
 
   const handleRegistration = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,34 +23,14 @@ export default function Home() {
 
     axios
       .post(`${API_URL}/users`, userData)
-      .then((response) => console.log(response));
+      .then((response) => Router.push("/dashboard"));
   };
 
-  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
-
-    const loginData = {
-      email: formData.get("login-email"),
-      password: formData.get("login-password"),
-    };
-
-    const jsonData = JSON.stringify(loginData);
-    console.log(jsonData);
-
-    axios
-      .post(`${API_URL}/users/login`, loginData)
-      .then((response) => {
-        console.log(response);
-        router.push("/dashboard");
-      })
-      .catch((err) => console.log(err));
-  };
+  
 
   return (
     <>
-      <div className="container d-flex flex-column align-items-center gap-3 p-4">
+      <div className="flex flex-col items-center justify-center h-screen">
         <style jsx>{`
           .responsive-form {
             width: 100%;
@@ -66,119 +44,88 @@ export default function Home() {
         `}</style>
         <form
           onSubmit={handleRegistration}
-          className={`responsive-form flex flex-column p-3 rounded lg:w-75 md:w-50 sm:w-100 bg-dark text-light m-4`}
+          className={`responsive-form flex flex-col items-center gap-4 text-white rounded p-6 h-screen`}
         >
-          <h2 className="mb-3">Register</h2>
-          <div className="mb-3">
+          <h2 className="mb-3 text-lg text-custom-yellow p-3 ">Register</h2>
+          <div className="mb-3 flex flex-col gap-2 justify-between w-full">
             <label className="form-label" htmlFor="first_name">
               First Name
             </label>
             <input
-              className="form-control"
+              className="form-control w-full"
               type="text"
               id="first_name"
               name="first_name"
             />
             <p className="text-danger"></p>
           </div>
-          <div className="mb-3">
+          <div className="mb-3 flex flex-col gap-2 justify-between w-full">
             <label className="form-label" htmlFor="last_name">
               Last Name
             </label>
             <input
-              className="form-control"
+              className="form-control w-full "
               type="text"
               id="last_name"
               name="last_name"
             />
             <p className="text-danger"></p>
           </div>
-          <div className="mb-3">
+          <div className="mb-3 flex flex-col gap-2 justify-between w-full">
             <label className="form-label" htmlFor="email">
               Email
             </label>
             <input
-              className="form-control"
+              className="form-control w-full"
               id="email"
               name="email"
               type="text"
             />
           </div>
-          <div className="mb-3">
+          <div className="mb-3 flex flex-col gap-2 justify-between w-full">
             <label className="form-label" htmlFor="password">
               Password
             </label>
             <input
-              className="form-control"
+              className="form-control w-full"
               type="password"
               id="password"
               name="password"
             />
           </div>
-          <div className="mb-3">
+          <div className="mb-3 flex flex-col gap-2 justify-between w-full">
             <label className="form-label" htmlFor="confirm-password">
               Confirm Password
             </label>
             <input
-              className="form-control"
+              className="form-control w-full"
               type="password"
               id="confirm-password"
               name="confirm-password"
             />
           </div>
-          <div className="form-group">
+          <div className="flex flex-col w-full">
             <button
               style={{
                 backgroundColor: "#AD974F",
                 color: "black",
                 fontWeight: "600",
+                width: "100%"
               }}
-              className=" form-control mt-3 btn w-100"
+              className="mt-3 p-3 button w-full rounded-full"
             >
               Register
             </button>
-          </div>
-        </form>
-
-        <form
-          onSubmit={handleLogin}
-          className={`responsive-form flex flex-column p-3  rounded lg:w-75 md:w-50 sm:w-100 bg-dark text-light m-4`}
-        >
-          <h2>Login</h2>
-          <p className="text-danger"></p>
-          <div className="form-group flex gap-2 mb-3">
-            <label className="form-label" htmlFor="login-email">
-              Email
-            </label>
-            <input
-              className="form-control"
-              id="login-email"
-              name="login-email"
-              type="text"
-            />
-          </div>
-          <div className="form-group flex gap-2 mb-3">
-            <label htmlFor="login-password">Password</label>
-            <input
-              className="form-control"
-              type="password"
-              id="login-password"
-              name="login-password"
-            />
-          </div>
-          <div className="form-group">
-            <button
-              style={{
+            <Link style={{
                 backgroundColor: "#AD974F",
                 color: "black",
                 fontWeight: "600",
-              }}
-              className=" form-control mt-3 btn w-100"
-            >
-              Login
-            </button>
+                width: "100%"
+              }} className="button rounded-full bg-custom-yellow button-lg flex flex-col p-3 mt-4 text-center" href="/login">Go to login page</Link>
           </div>
         </form>
+
+        
       </div>
     </>
   );

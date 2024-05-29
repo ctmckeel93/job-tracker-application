@@ -23,7 +23,7 @@ export default function CreateJobTrackerPage() {
   };
   return (
     <>
-      <div className="flex flex-col">
+      <div className="flex flex-col text-white">
         <style jsx>{`
           .responsive-form {
             width: 100%;
@@ -37,9 +37,9 @@ export default function CreateJobTrackerPage() {
         `}</style>
         <form
           onSubmit={submitHandler}
-          className={`responsive-form flex flex-col rounded shadow shadow-yellow-400 border border-yellow-500`}
+          className={`responsive-form flex flex-col text-white p-4`}
         >
-          <div className="form-group mb-2">
+          <div className="flex flex-col">
             <label htmlFor="company">Company</label>
             <input
               type="text"
@@ -48,7 +48,7 @@ export default function CreateJobTrackerPage() {
               className="form-control text-black"
             />
           </div>
-          <div className="form-group mb-2">
+          <div className="flex flex-col">
             <label htmlFor="position">Position</label>
             <input
               type="text"
@@ -57,14 +57,14 @@ export default function CreateJobTrackerPage() {
               className="form-control text-black"
             />
           </div>
-          <div className="form-group">
+          <div className="form-group flex">
             <button
               style={{
                 backgroundColor: "#AD974F",
                 color: "black",
                 fontWeight: "600",
               }}
-              className=" form-control mt-3 btn w-100"
+              className=" form-control mt-3 p-4 w-full w-100"
             >
               Add
             </button>

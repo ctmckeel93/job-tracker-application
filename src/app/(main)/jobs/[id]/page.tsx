@@ -1,10 +1,13 @@
 "use client";
 import axios from "axios";
 import { FormEvent, useEffect, useState } from "react";
-import { type JobData } from "../../../types";
+import { type JobData } from "../../../../types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import deleteButton from '../../../../../public/delete-button.svg'
 import { API_URL } from "@/constants";
+import Image from "next/image";
+import Loading from "@/app/components/Spinner";
 
 export default function JobDetailsPage({ params }: { params: { id: string } }) {
     const [job, setJob] = useState<JobData | null>();
@@ -49,17 +52,16 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
     }
 
     if (!job) {
-        return <p>...Loading</p>;
+        return <Loading/>;
     }
 
     return (
-        <>
-            <h1>Job Details page for job id: {params.id}</h1>
-            <h2>Company | {job.company} </h2>
+        <div className="text-white p-4">
+            <div className="flex w-full justify-center items-center gap-2">
+                <h1 className="text-3xl text-center">{job.company}</h1>
+                    <Image onClick={removeJob} className="mt-2" src={deleteButton} alt="delete button" />
+            </div>
             <h2>Position | {job.position} </h2>
-            <button className="btn btn-danger" onClick={removeJob}>
-                Remove
-            </button>
             <Link
                 href={`/jobs/${params.id}/update`}
                 className="btn btn-warning"
@@ -68,21 +70,21 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
             </Link>
 
             {addingNote ? (
-                <form onSubmit={handleAddNote} className="w-50 bg-dark mx-auto d-flex flex-column align-items-center justify-content-center p-5 text-light text-left">
+                <form onSubmit={handleAddNote} className="w-50 bg-dark mx-auto flex flex-col items-center justify-center p-5 text-white text-left">
                         <label className="align-self-start mx-2 mb-2" htmlFor="category">
                             Category:
                         </label>
-                    <div className="w-100">
+                    <div className="w-full">
                         <input
-                            className="w-100 m-2"
+                            className="w-full m-2"
                             type="text"
                             name="category"
                         />
                     </div>
-                    <div className="w-100">
+                    <div className="w-full">
                         <label htmlFor="note" className="mx-2">Note:</label>
                         <textarea
-                            className="w-100 m-2"
+                            className="w-full m-2"
                             name="context"
                         ></textarea>
                     </div>
@@ -103,6 +105,6 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
                     </>
                 ))}
             </div>
-        </>
+        </div>
     );
 }
