@@ -12,19 +12,45 @@ import Loading from "@/app/components/Spinner";
 
 export default function JobDetailsPage({ params }: { params: { id: string } }) {
     const [job, setJob] = useState<JobData | null>();
+    const [notes, setNotes] = useState<any[]>([]);
     const [addingNote, setAddingNote] = useState(false);
+    const [categories, setCategories] = useState(CATEGORIES);
 
     useEffect(() => {
         axios
             .get(`${API_URL}/jobs/${params.id}`)
-            .then((response) => setJob(response.data.job))
+            .then((response) => {
+                setJob(response.data.job);
+                setNotes(response.data.job.notes);
+            })
             .catch((err) => console.log(err));
+    }, []);
+
+    useEffect(() => {
+        if (job) {
+            const filteredNotes = notes.filter((note) => {
+                console.log("here");
+                console.log(note);
+                if (categories[note.category]?.isShowing) {
+                    return note;
+                }
+            });
+            setJob(
+                (prevJob) => prevJob && { ...prevJob, notes: filteredNotes }
+            );
+        }
+    }, [categories]);
+
+    useEffect(() => {
+        if (job) {
+            setNotes(job.notes);
+        }
     }, []);
     const [note, setNote] = useState({
         context: "",
         category: "",
         jobId: Number(params.id),
-        created_at: ""
+        created_at: "",
     });
     const router = useRouter();
 
@@ -56,6 +82,16 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
             .catch((error) => console.log(error));
     };
 
+    const filterCategories = async (category: string) => {
+        await setCategories((prevCategories) => ({
+            ...prevCategories,
+            [category]: {
+                ...prevCategories[category],
+                isShowing: !prevCategories[category].isShowing,
+            },
+        }));
+    };
+
     if (!job) {
         return <Loading />;
     }
@@ -85,16 +121,31 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
                 >
                     <label htmlFor="category">Category:</label>
                     <div className="w-full">
-                        <select className="w-full text-black" name="category" id="">
-                        {Object.keys(CATEGORIES).map((category, index) => {
-                            const {id, label}: {id: number, label: string} = (CATEGORIES[category]);
-                            return <option key={id} value={category}>{label}</option>
-                        })}
-                    </select>
+                        <select
+                            className="w-full text-black"
+                            name="category"
+                            id=""
+                        >
+                            {Object.keys(categories).map((category, index) => {
+                                const {
+                                    id,
+                                    label,
+                                }: { id: number; label: string } =
+                                    categories[category];
+                                return (
+                                    <option key={id} value={category}>
+                                        {label}
+                                    </option>
+                                );
+                            })}
+                        </select>
                     </div>
                     <div className="w-full">
                         <label htmlFor="note">Note:</label>
-                        <textarea className="w-full text-black" name="context"></textarea>
+                        <textarea
+                            className="w-full text-black"
+                            name="context"
+                        ></textarea>
                     </div>
                     <button className="bg-custom-yellow p-4 w-full">Add</button>
                 </form>
@@ -107,21 +158,57 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
                 </button>
             )}
             <h2 className="text-center text-2xl">Notes</h2>
-            <div className="flex gap-4 flex-wrap justify-center">
-                {job &&
-                    job.notes?.map((note) => (
-                        <>
-                        {console.log(note)}
-                            <div className="w-full md:w-[300px] h-[300px] bg-gray-900 text-white flex flex-col text-black rounded-t-xl">
-                                <div style={{
-                                    backgroundColor: `${CATEGORIES[note.category.toLowerCase()] ? CATEGORIES[note.category.toLowerCase()].color : "gray"}`
-                                }} className={`h-[50px] w-full rounded-t-xl flex justify-center items-center`}>{new Date(note.created_at).toLocaleDateString("en-us", {month: "long", day: "numeric"})}</div>
-                                {/* <i>{note.createdAt}</i> */}
-                                <p className="p-3">{note.context}</p>
-                            </div>
-                        </>
-                    ))}
+            <div className="w-full h-6 lg:flex justify-evenly items-center hidden">
+                {Object.keys(categories).map((category) => {
+                    return (
+                        <div
+                            onClick={() => filterCategories(category)}
+                            key={categories[category].id}
+                            style={{
+                                backgroundColor: categories[category].color,
+                                opacity: categories[category].isShowing
+                                    ? "100%"
+                                    : "30%",
+                            }}
+                            className="text-white w-[150px] text-sm rounded-full p-2 text-center font-bold"
+                        >
+                            {categories[category].label}
+                        </div>
+                    );
+                })}
             </div>
-        </div>
+                <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2  md:justify-items-center justify-center gap-y-10 grid-cols-1">
+                    {job &&
+                        job.notes?.map((note) => (
+                            <>
+                                <div className="w-full md:w-[300px] h-[300px] bg-gray-900 text-white flex flex-col text-black rounded-t-xl">
+                                    <div
+                                        style={{
+                                            backgroundColor: `${
+                                                categories[
+                                                    note.category.toLowerCase()
+                                                ]
+                                                    ? categories[
+                                                          note.category.toLowerCase()
+                                                      ].color
+                                                    : "gray"
+                                            }`,
+                                        }}
+                                        className={`h-[50px] w-full rounded-t-xl flex justify-center items-center`}
+                                    >
+                                        {new Date(
+                                            note.created_at
+                                        ).toLocaleDateString("en-us", {
+                                            month: "long",
+                                            day: "numeric",
+                                        })}
+                                    </div>
+                                    {/* <i>{note.createdAt}</i> */}
+                                    <p className="p-3">{note.context}</p>
+                                </div>
+                            </>
+                        ))}
+                </div>
+            </div>
     );
 }
