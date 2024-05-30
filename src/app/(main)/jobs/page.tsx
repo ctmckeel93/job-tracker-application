@@ -3,12 +3,13 @@ import { API_URL } from "@/constants";
 import axios from "axios";
 import cookies from "js-cookie";
 import { FormEvent } from "react";
+import { useRouter } from "next/navigation";
 export default function CreateJobTrackerPage() {
+  const router = useRouter();
   const submitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-
     const jobTracker = {
       company: formData.get("company"),
       position: formData.get("position"),
@@ -18,6 +19,7 @@ export default function CreateJobTrackerPage() {
       .post(API_URL + "jobs", jobTracker)
       .then((response) => {
         console.log(response);
+        router.replace("/dashboard")
       })
       .catch((err) => console.log(err));
   };

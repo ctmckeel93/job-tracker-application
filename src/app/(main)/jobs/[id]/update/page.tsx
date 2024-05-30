@@ -47,8 +47,8 @@ export default function UpdateJobPage({params}: {
 
     return (
         <>
-            <form onSubmit={submitHandler} >
-                <div className="form-group mb-2">
+            <form onSubmit={submitHandler} className="p-3 gap-3 md:w-[50%] flex flex-col items-center w-full mx-auto">
+                <div className="flex flex-col w-full mb-2 text-white">
                     <label htmlFor="company">Company</label>
                     <input
                         type="text"
@@ -64,13 +64,13 @@ export default function UpdateJobPage({params}: {
                         }
                     />
                 </div>
-                <div className="form-group mb-2">
+                <div className="text-white mb-2 w-full">
                     <label htmlFor="position">Position</label>
                     <input
                         type="text"
                         id="position"
                         name="position"
-                        className="text-black"
+                        className="text-black w-full"
                         value={jobTracker.position}
                         onChange={(e) =>
                             setJobTracker({
@@ -80,7 +80,7 @@ export default function UpdateJobPage({params}: {
                         }
                     />
                 </div>
-                <button className="border border-red-600 rounded p-2">Add</button>
+                <button className=" bg-custom-yellow w-full p-4">Update</button>
             </form>
         </>
     )

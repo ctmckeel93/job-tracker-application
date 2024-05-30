@@ -5,6 +5,8 @@ import cookies from "js-cookie";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import Loading from '../../components/Spinner';
+import infoButton from '../../../../public/info-button.svg';
+import Image from "next/image";
 export default function DashboardPage() {
     type UserData = {
         id: number;
@@ -52,22 +54,12 @@ export default function DashboardPage() {
                             <>
                                 {job.user.id ==
                                     Number(cookies.get("userId")) && (
-                                    <tr className="align-middle border-b-2 p-4 border-white mb-3 h-[50px]">
+                                    <tr className="items-center border-b-2 p-4 border-white mb-3 h-[50px]">
                                         <td>{job.company}</td>
                                         <td>{job.position}</td>
-                                        <td>
-                                            <Link href={`/jobs/${job.id}`}>
-                                                <button
-                                                    style={{
-                                                        backgroundColor:
-                                                            "#AD974F",
-                                                        color: "black",
-                                                        fontWeight: "600",
-                                                    }}
-                                                    className="rounded-full text-sm p-2"
-                                                >
-                                                    Details
-                                                </button>
+                                        <td className=" flex justify-center h-[100%] mt-3">
+                                            <Link  href={`/jobs/${job.id}`}>
+                                                    <Image src={infoButton} alt="info-button"/>
                                             </Link>
                                         </td>
                                     </tr>
