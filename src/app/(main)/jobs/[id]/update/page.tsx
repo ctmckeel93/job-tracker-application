@@ -4,6 +4,7 @@ import axios from "axios";
 import cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
+import { CATEGORIES } from "@/constants";
 
 export default function UpdateJobPage({params}: {
     params: {id:number}

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import deleteButton from "../../../../../public/delete-button.svg";
 import editButton from "../../../../../public/edit-button.svg";
-import { API_URL } from "@/constants";
+import { API_URL, CATEGORIES } from "@/constants";
 import Image from "next/image";
 import Loading from "@/app/components/Spinner";
 
@@ -24,6 +24,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
         context: "",
         category: "",
         jobId: Number(params.id),
+        created_at: ""
     });
     const router = useRouter();
 
@@ -84,7 +85,12 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
                 >
                     <label htmlFor="category">Category:</label>
                     <div className="w-full">
-                        <input className="w-full text-black" type="text" name="category" />
+                        <select className="w-full text-black" name="category" id="">
+                        {Object.keys(CATEGORIES).map((category, index) => {
+                            const {id, label}: {id: number, label: string} = (CATEGORIES[category]);
+                            return <option key={id} value={category}>{label}</option>
+                        })}
+                    </select>
                     </div>
                     <div className="w-full">
                         <label htmlFor="note">Note:</label>
@@ -105,9 +111,13 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
                 {job &&
                     job.notes?.map((note) => (
                         <>
-                            <div className="w-[300px] h-[300px] p-4 bg-custom-yellow text-black flex items-center justify-center text-black">
-                                <i>{note.createdAt}</i>
-                                <p>{note.context}</p>
+                        {console.log(note)}
+                            <div className="w-full md:w-[300px] h-[300px] bg-gray-900 text-white flex flex-col text-black rounded-t-xl">
+                                <div style={{
+                                    backgroundColor: `${CATEGORIES[note.category.toLowerCase()] ? CATEGORIES[note.category.toLowerCase()].color : "gray"}`
+                                }} className={`h-[50px] w-full rounded-t-xl flex justify-center items-center`}>{new Date(note.created_at).toLocaleDateString("en-us", {month: "long", day: "numeric"})}</div>
+                                {/* <i>{note.createdAt}</i> */}
+                                <p className="p-3">{note.context}</p>
                             </div>
                         </>
                     ))}

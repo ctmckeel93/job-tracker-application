@@ -1,31 +1,45 @@
 export const API_URL = "http://localhost:3000/api/"
-export const CATEGORIES = {
+
+interface Category {
+    id: number,
+    label: string,
+    color: string
+}
+
+export const CATEGORIES: Record<string, Category> = {
     details: {
+        id: 1,
         label: "Job Details",
-        color: "black"
+        color: "#4ade80"
     },
     description: {
+        id: 2,
         label: "Job Description",
-        color:"orange"
+        color:"#fb923c"
     },
     research: {
+        id: 3,
         label: "Company Research",
-        color:"yellow"
+        color:"#818cf8"
     },
     application: {
+        id: 4,
         label: "Application Process",
-        color: "cyan"
+        color: "#22d3ee"
     },
     interview: {
+        id: 5,
         label: "Interview Prep",
-        color: "green"
+        color: "#f87171"
     },
     networking: {
+        id: 6,
         label: "Networking",
-        color: "blue"
+        color: "#60a5fa"
     },
     feedback: {
+        id: 7,
         label: "Feedback",
-        color: "purple"
+        color: "#c084fc"
     }
 }
