@@ -16,6 +16,15 @@
   }
 }
 
+.slide-up-container {
+  transition: transform 0.3s ease-out;
+  transform: translateY(100%);
+}
+
+.slide-up-container.open {
+  transform: translateY(0);
+}
+
 /* body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(

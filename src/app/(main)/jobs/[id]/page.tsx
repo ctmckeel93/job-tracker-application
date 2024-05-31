@@ -5,6 +5,7 @@ import { type JobData } from "../../../../types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import deleteButton from "../../../../../public/delete-button.svg";
+import chevronDown from "../../../../../public/chevron-down.svg";
 import editButton from "../../../../../public/edit-button.svg";
 import { API_URL, CATEGORIES } from "@/constants";
 import Image from "next/image";
@@ -15,6 +16,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
     const [notes, setNotes] = useState<any[]>([]);
     const [addingNote, setAddingNote] = useState(false);
     const [categories, setCategories] = useState(CATEGORIES);
+    const [showingFilterContainer, setShowingFilterContainer] = useState(false);
 
     useEffect(() => {
         axios
@@ -177,38 +179,67 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
                     );
                 })}
             </div>
-                <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2  md:justify-items-center justify-center gap-y-10 grid-cols-1">
-                    {job &&
-                        job.notes?.map((note) => (
-                            <>
-                                <div className="w-full md:w-[300px] h-[300px] bg-gray-900 text-white flex flex-col text-black rounded-t-xl">
-                                    <div
-                                        style={{
-                                            backgroundColor: `${
-                                                categories[
-                                                    note.category.toLowerCase()
-                                                ]
-                                                    ? categories[
-                                                          note.category.toLowerCase()
-                                                      ].color
-                                                    : "gray"
-                                            }`,
-                                        }}
-                                        className={`h-[50px] w-full rounded-t-xl flex justify-center items-center`}
-                                    >
-                                        {new Date(
-                                            note.created_at
-                                        ).toLocaleDateString("en-us", {
-                                            month: "long",
-                                            day: "numeric",
-                                        })}
-                                    </div>
-                                    {/* <i>{note.createdAt}</i> */}
-                                    <p className="p-3">{note.context}</p>
+            <div className="  flex flex-row justify-center w-full">
+                <p onClick={() => setShowingFilterContainer(true)} className="w-[150px] rounded-full bg-gray-800 text-white text-center p-1 flex flex-col items-center text-sm lg:hidden">
+                    See filters
+                    <Image src={chevronDown} alt="down chevron arrow" />
+                </p>
+            </div>
+            <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2  md:justify-items-center justify-center gap-y-10 grid-cols-1">
+                {job &&
+                    job.notes?.map((note) => (
+                        <>
+                            <div className="w-full md:w-[300px] h-[300px] bg-gray-900 text-white flex flex-col text-black rounded-t-xl">
+                                <div
+                                    style={{
+                                        backgroundColor: `${
+                                            categories[
+                                                note.category.toLowerCase()
+                                            ]
+                                                ? categories[
+                                                      note.category.toLowerCase()
+                                                  ].color
+                                                : "gray"
+                                        }`,
+                                    }}
+                                    className={`h-[50px] w-full rounded-t-xl flex justify-center items-center`}
+                                >
+                                    {new Date(
+                                        note.created_at
+                                    ).toLocaleDateString("en-us", {
+                                        month: "long",
+                                        day: "numeric",
+                                    })}
                                 </div>
-                            </>
-                        ))}
+                                {/* <i>{note.createdAt}</i> */}
+                                <p className="p-3">{note.context}</p>
+                            </div>
+                        </>
+                    ))}
+            </div>
+            <div className={`h-[50%] fixed bottom-0 left-0 w-screen bg-gray-900 lg:hidden flex flex-col items-center justify-around slide-up-container ${showingFilterContainer ? "open" : ""}`}>
+                <div className="h-[20px] w-[20px] rounded-full border border-black bg-red-400" onClick={() => setShowingFilterContainer(false)}></div>
+                <h3 className="text-custom-yellow text-xl font-bold">Click to filter notes by category</h3>
+                <div className="md:grid-cols-3 md: grid grid-cols-1 place-content-center place-items-center gap-y-[20px] w-full">
+                {Object.keys(categories).map((category) => {
+                        return (
+                            <div
+                                onClick={() => filterCategories(category)}
+                                key={categories[category].id}
+                                style={{
+                                    backgroundColor: categories[category].color,
+                                    opacity: categories[category].isShowing
+                                        ? "100%"
+                                        : "30%",
+                                }}
+                                className="flex justify-center items-center text-white w-[150px] h-[20px] text-sm rounded-full p-2 font-bold"
+                            >
+                                {categories[category].label}
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
+        </div>
     );
 }
