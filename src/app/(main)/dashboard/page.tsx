@@ -22,7 +22,7 @@ export default function DashboardPage() {
         user: UserData;
     };
 
-    const [jobs, setJobs] = useState(null);
+    const [jobs, setJobs] = useState([]);
 
     useEffect(() => {
         axios
@@ -49,7 +49,7 @@ export default function DashboardPage() {
                     </tr>
                 </thead>
                 <tbody>
-                    {jobs &&
+                    {jobs.length > 0 &&
                         jobs.map((job: JobData, index) => (
                             <>
                                 {job.user.id ==
