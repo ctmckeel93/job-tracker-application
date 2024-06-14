@@ -85,6 +85,13 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
             .catch((error) => console.log(error));
     };
 
+    const removeNote = (noteId:number) => {
+        axios.delete(`${API_URL}/notes/${noteId}`)
+            .then(() => setJob((prevJob) => {
+                return prevJob != null ? { ...prevJob, notes: prevJob.notes.filter(note => note.id !== noteId)} : null
+            } )).catch(err => console.log("Something interrupted the process deleting a note."))
+    }
+
     const filterCategories = async (category: string) => {
         await setCategories((prevCategories) => ({
             ...prevCategories,
@@ -190,7 +197,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
                 {job && job.notes.sort(orderByCreatedAt) &&
                     job.notes?.map((note) => (
                         <>
-                            <div className="w-full md:w-[300px] h-[300px] bg-gray-900 text-white flex flex-col text-black rounded-t-xl">
+                            <div key={note.id} className="w-full md:w-[300px] h-[300px] bg-gray-900 text-white flex flex-col text-black rounded-t-xl">
                                 <div
                                     style={{
                                         backgroundColor: `${
@@ -203,14 +210,19 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
                                                 : "gray"
                                         }`,
                                     }}
-                                    className={`h-[50px] w-full rounded-t-xl flex justify-center items-center`}
+                                    className={`h-[50px] w-full rounded-t-xl flex items-center`}
                                 >
-                                    {new Date(
-                                        note.created_at
-                                    ).toLocaleDateString("en-us", {
-                                        month: "long",
-                                        day: "numeric",
-                                    })}
+                                    <div className="flex flex-1 justify-center">
+                                        {new Date(
+                                            note.created_at
+                                        ).toLocaleDateString("en-us", {
+                                            month: "long",
+                                            day: "numeric",
+                                        })}
+                                    </div>
+                                    <div className=" flex-2 self-start">
+                                        <Image onClick={() => removeNote(note.id)} src={deleteButton} alt="click to delete note"/>
+                                    </div>
                                 </div>
                                 {/* <i>{note.createdAt}</i> */}
                                 <p className="p-3">{note.context}</p>
