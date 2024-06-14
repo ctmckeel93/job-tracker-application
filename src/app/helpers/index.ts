@@ -8,3 +8,15 @@ export const arrayFromRows = (rows:any) => {
 
     return result;
 }
+
+export const orderByCreatedAt = (a:{created_at: Date},b:{created_at: Date}) => {
+    console.log(a)
+    console.log(b)
+    if (a.created_at > b.created_at) {
+        return -1
+    } else if (a.created_at == b.created_at) {
+        return 0;
+    } else {
+        return 1;
+    }
+}

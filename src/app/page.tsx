@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <>
       <div className="flex flex-col items-center justify-center h-screen">
-        <style jsx>{`
+        {/* <style jsx>{`
           .responsive-form {
             width: 100%;
             max-width: 50%;
@@ -41,10 +41,10 @@ export default function Home() {
               max-width: 100%;
             }
           }
-        `}</style>
+        `}</style> */}
         <form
           onSubmit={handleRegistration}
-          className={`responsive-form flex flex-col items-center gap-4 text-white rounded p-6 h-screen`}
+          className={`responsive-form flex flex-col items-center gap-4 text-white rounded p-6 h-screen w-full xl:w-[75%]`}
         >
           <h2 className="mb-3 text-lg text-custom-yellow p-3 ">Register</h2>
           <div className="mb-3 flex flex-col gap-2 justify-between w-full">

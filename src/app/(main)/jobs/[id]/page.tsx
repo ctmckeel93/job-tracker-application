@@ -10,6 +10,7 @@ import editButton from "../../../../../public/edit-button.svg";
 import { API_URL, CATEGORIES } from "@/constants";
 import Image from "next/image";
 import Loading from "@/app/components/Spinner";
+import { orderByCreatedAt } from "@/app/helpers";
 
 export default function JobDetailsPage({ params }: { params: { id: string } }) {
     const [job, setJob] = useState<JobData | null>();
@@ -160,7 +161,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
                 </button>
             )}
             <h2 className="text-center text-2xl">Notes</h2>
-            <div className="w-full h-6 lg:flex justify-evenly items-center hidden">
+            <div className="w-full h-6 lg:flex justify-evenly items-center hidden hover:cursor-pointer">
                 {Object.keys(categories).map((category) => {
                     return (
                         <div
@@ -186,7 +187,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
                 </p>
             </div>
             <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2  md:justify-items-center justify-center gap-y-10 grid-cols-1">
-                {job &&
+                {job && job.notes.sort(orderByCreatedAt) &&
                     job.notes?.map((note) => (
                         <>
                             <div className="w-full md:w-[300px] h-[300px] bg-gray-900 text-white flex flex-col text-black rounded-t-xl">
