@@ -1,9 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
-import {db} from "../index";
+import {db} from "@/app/api";
 import bcrypt from "bcrypt";
-import {PrismaClient} from '@prisma/client';
-
-const prisma = new PrismaClient();
+import {prisma} from "@/app/api/index";
 
 export async function GET() {
     const results = await prisma.user.findMany({

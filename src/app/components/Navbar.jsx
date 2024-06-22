@@ -5,6 +5,7 @@ import { useState } from "react";
 const Navbar = () => {
 
     const [isShowing, setIsShowing] = useState(false);
+
     return (
         <nav className="text-white">
             <div className="flex justify-between p-2 items-center bg-custom-yellow">

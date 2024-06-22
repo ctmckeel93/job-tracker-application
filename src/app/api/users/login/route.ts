@@ -1,17 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from "next";
 import { cookies } from "next/headers";
 
-const prisma = new PrismaClient();
+import {prisma} from "@/app/api/index";
 
 export async function POST(request: NextRequest) {
 
     const body = await request.json();
     console.log("RAW REQUEST BODY", body)
-    // const formData = JSON.parse(body)
-    // console.log(formData)
 
     const login = await prisma.user.findFirst({
         where: {email: body.email}

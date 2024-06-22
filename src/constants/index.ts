@@ -1,4 +1,4 @@
-export const API_URL = "http://localhost:3000/api/"
+export const API_URL = process.env.NODE_ENV === "development" ? "http:localhost:3000/api" : "https://noted-two.vercel.app/api"
 
 interface Category {
     id: number,

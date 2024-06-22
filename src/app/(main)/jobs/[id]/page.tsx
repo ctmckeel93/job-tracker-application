@@ -23,6 +23,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
         axios
             .get(`${API_URL}/jobs/${params.id}`)
             .then((response) => {
+                response.data.job.notes.sort(orderByCreatedAt);
                 setJob(response.data.job);
                 setNotes(response.data.job.notes);
             })
@@ -39,7 +40,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
                 }
             });
             setJob(
-                (prevJob) => prevJob && { ...prevJob, notes: filteredNotes }
+                (prevJob) => prevJob && { ...prevJob, notes: filteredNotes.toSorted(orderByCreatedAt) }
             );
         }
     }, [categories]);
@@ -49,6 +50,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
             setNotes(job.notes);
         }
     }, []);
+
     const [note, setNote] = useState({
         context: "",
         category: "",
@@ -73,13 +75,14 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
             context: formData.get("context"),
             category: formData.get("category"),
             jobId: Number(params.id),
+            created_at: new Date()
         };
         axios
             .post(API_URL + `notes`, note)
             .then(() => {
                 setAddingNote(false);
                 setJob(
-                    job != null ? { ...job, notes: [...job.notes, note] } : null
+                    job != null ? { ...job, notes: [note, ...job.notes]} : null
                 );
             })
             .catch((error) => console.log(error));
@@ -194,7 +197,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
                 </p>
             </div>
             <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2  md:justify-items-center justify-center gap-y-10 grid-cols-1">
-                {job && job.notes.sort(orderByCreatedAt) &&
+                {job && job.notes &&
                     job.notes?.map((note) => (
                         <>
                             <div key={note.id} className="w-full md:w-[300px] h-[300px] bg-gray-900 text-white flex flex-col text-black rounded-t-xl">

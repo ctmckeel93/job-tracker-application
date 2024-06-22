@@ -4,11 +4,12 @@ import Image from "next/image";
 import axios from "axios";
 import { API_URL } from "../constants";
 import { useRouter } from "next/navigation";
-import cookies from "js-cookie";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import Router from "next/router";
 
 export default function Home() {
+
   
 
   const handleRegistration = (event: FormEvent<HTMLFormElement>) => {
@@ -52,7 +53,7 @@ export default function Home() {
               First Name
             </label>
             <input
-              className="form-control w-full"
+              className="form-control w-full text-black"
               type="text"
               id="first_name"
               name="first_name"
@@ -64,7 +65,7 @@ export default function Home() {
               Last Name
             </label>
             <input
-              className="form-control w-full "
+              className="form-control w-full text-black"
               type="text"
               id="last_name"
               name="last_name"
@@ -76,7 +77,7 @@ export default function Home() {
               Email
             </label>
             <input
-              className="form-control w-full"
+              className="form-control w-full text-black"
               id="email"
               name="email"
               type="text"
@@ -87,7 +88,7 @@ export default function Home() {
               Password
             </label>
             <input
-              className="form-control w-full"
+              className="form-control w-full text-black"
               type="password"
               id="password"
               name="password"
@@ -98,7 +99,7 @@ export default function Home() {
               Confirm Password
             </label>
             <input
-              className="form-control w-full"
+              className="form-control w-full text-black"
               type="password"
               id="confirm-password"
               name="confirm-password"

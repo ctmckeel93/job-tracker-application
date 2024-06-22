@@ -58,7 +58,7 @@ export default function Login() {
                             Email
                         </label>
                         <input
-                            className="form-control w-full"
+                            className="form-control w-full text-black"
                             id="email"
                             name="email"
                             type="text"
@@ -69,7 +69,7 @@ export default function Login() {
                             Password
                         </label>
                         <input
-                            className="form-control w-full"
+                            className="form-control w-full text-black"
                             type="password"
                             id="password"
                             name="password"

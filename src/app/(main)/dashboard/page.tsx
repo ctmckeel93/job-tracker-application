@@ -23,6 +23,8 @@ export default function DashboardPage() {
     };
 
     const [jobs, setJobs] = useState([]);
+    const [username, setUsername] = useState(cookies.get("userName"));
+    const [userId, setUserId] = useState(cookies.get("userId"));
 
     useEffect(() => {
         axios
@@ -37,7 +39,7 @@ export default function DashboardPage() {
     return (
         <div className="p-4">
             <h1>
-                Hello <span>{cookies.get("userName")}</span>
+                Hello <span suppressHydrationWarning >{username}</span>
             </h1>
             
             <table className="table-auto w-full text-center text-white p-3">
@@ -50,11 +52,11 @@ export default function DashboardPage() {
                 </thead>
                 <tbody>
                     {jobs.length > 0 &&
-                        jobs.map((job: JobData, index) => (
+                        jobs.map((job: JobData) => (
                             <>
                                 {job.user.id ==
-                                    Number(cookies.get("userId")) && (
-                                    <tr className="items-center border-b-2 p-4 border-white mb-3 h-[50px]">
+                                    Number(userId) && (
+                                    <tr key={job.id}  className="items-center border-b-2 p-4 border-white mb-3 h-[50px]">
                                         <td>{job.company}</td>
                                         <td>{job.position}</td>
                                         <td className=" flex justify-center h-[100%] mt-3">
