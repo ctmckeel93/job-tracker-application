@@ -28,7 +28,7 @@ export default function DashboardPage() {
 
     useEffect(() => {
         axios
-            .get(API_URL + "jobs")
+            .get(API_URL + "/jobs")
             .then((response) => setJobs(response.data.jobs))
             .catch((err) => console.log(err));
     }, []);

@@ -61,7 +61,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
 
     const removeJob = () => {
         axios
-            .delete(`http://localhost:3000/api/jobs/${params.id}`)
+            .delete(`${API_URL}/jobs/${params.id}`)
             .then(() => router.replace("/dashboard"))
             .catch((error) => console.log(error));
     };
@@ -78,7 +78,7 @@ export default function JobDetailsPage({ params }: { params: { id: string } }) {
             created_at: new Date()
         };
         axios
-            .post(API_URL + `notes`, note)
+            .post(API_URL + `/notes`, note)
             .then(() => {
                 setAddingNote(false);
                 setJob(

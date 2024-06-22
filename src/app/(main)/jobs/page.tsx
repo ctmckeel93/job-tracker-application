@@ -16,7 +16,7 @@ export default function CreateJobTrackerPage() {
       userId: cookies.get("userId"),
     };
     axios
-      .post(API_URL + "jobs", jobTracker)
+      .post(API_URL + "/jobs", jobTracker)
       .then((response) => {
         console.log(response);
         router.replace("/dashboard")
