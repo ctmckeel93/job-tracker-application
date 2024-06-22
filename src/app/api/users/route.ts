@@ -1,5 +1,4 @@
 import { NextResponse, NextRequest } from "next/server";
-import {db} from "@/app/api";
 import bcrypt from "bcrypt";
 import {prisma} from "@/app/api/index";
 
